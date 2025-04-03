@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>p5.js Example</title>
+    <!-- p5.js Library Include Karna -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        canvas {
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 style="text-align: center;">Trying P5 editor !! </h1>
+
+    <div style="margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 6px; ">
+          <button onclick="startDrawing()"> Pencil </button>
+          <button onclick="Erase()">Erase</button>
+          <button onclick="FullSize()">Full Size</button>
+    </div>
+    
+    <!-- p5.js Canvas yahan show hoga -->
+
+    <script>
+        // p5.js ke liye basic setup aur draw functions
+        let isDrawing = false;  // Flag to track drawing mode
+        let prevX, prevY;  // To store the previous mouse position for line drawin
+        
+        function setup() {
+            // Canvas ko set karte hain
+            createCanvas(windowWidth, windowHeight);
+            background(220);
+            noLoop();
+        }
+
+        // function draw() {
+        //   console.log("Loop")
+        //     if (isDrawing) {  // Agar drawing mode enable ho, tab drawing karen
+        //         let lineHue = mouseX - mouseY; // Line baana ta haa 
+        //         stroke(0) // colour of the line 
+        //         strokeWeight(4)
+        //         line(pmouseX, pmouseY, mouseX, mouseY);
+        //     }
+        // }
+
+        function mousePressed() {
+            if (isDrawing) {
+                prevX = mouseX;
+                prevY = mouseY;
+            }
+        }
+
+        function mouseDragged() {
+            if (isDrawing) {
+                stroke(0);  // Black color for line
+                strokeWeight(5);  // Line thickness of 5
+                line(prevX, prevY, mouseX, mouseY);  // Draw line
+                prevX = mouseX;  // Update previous mouse position
+                prevY = mouseY;
+            }
+        }
+
+        function touchStarted() {
+            if (isDrawing) {
+                prevX = touches[0].x;
+                prevY = touches[0].y;
+                return false; // To prevent default action (like scrolling)
+            }
+        }
+
+        function touchMoved() {
+            if (isDrawing) {
+                // Draw a line from previous position to current position
+                stroke(0);  // Black color for line
+                strokeWeight(5);  // Line thickness of 5
+                line(prevX, prevY, touches[0].x, touches[0].y); // Line from prevX, prevY to current touch position
+                
+                prevX = touches[0].x;  // Update previous touch position
+                prevY = touches[0].y;
+                return false;  // To prevent default action (like scrolling)
+            }
+        }
+
+        function startDrawing() {
+            isDrawing = !isDrawing ;
+
+            if(isDrawing === true){
+              loop()
+            }
+
+            if(isDrawing === false){
+              noLoop()
+            }
+           
+        }
+
+        function FullSize(){
+          resizeCanvas(710, 500);
+        }
+
+
+        function Erase() {
+          background(220); // clean the canvas 
+        }
+    </script>
+
+</body>
+</html>
